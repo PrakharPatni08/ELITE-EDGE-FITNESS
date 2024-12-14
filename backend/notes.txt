@@ -1,0 +1,123 @@
+npm init
+remove test from package.json
+and paste this:-package.json
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  }
+}
+
+npm i express cors dotenv
+create app.js file in backend
+
+in app.js write this
+import express from "express";
+import { config } from "dotenv";
+import cors from "cors";
+
+const app = express();
+const router = express.Router();
+
+create a file name config.env in backend
+PORT=4000
+
+in app.js set the path of the confiig.env file
+config({path: "./config.env"});
+
+app.listen(process.env.PORT, ()=>{
+    console.log(`Server listening at port ${process.env.PORT}`);
+});
+
+npm run dev to check 
+
+in config.env
+FRONTEND_URL=http://localhost:5173
+
+in app.js
+app.use(cors({
+    origin: [process.env.FRONTEND_URL],//now we are connected to our frontend
+    methods: ["POST"],
+    credentials: true
+}))
+
+
+in app.js
+//use of middleware
+app.use(cors({
+    origin: [process.env.FRONTEND_URL],//now we are connected to our frontend
+    methods: ["POST"],
+    credentials: true
+}));
+
+app.use(express.json());//to get the encoded data
+app.use(express.urlencoded({ extended: true }));
+
+router.post("/send/mail", async(req, res, next)=>{//setting the route 
+    const { name, email, message } = req.body;
+    if(!name || !email || !message){//writing the email function
+        return next(
+            res.status(400).json({
+                success: false,
+                message: "Please provide all details",
+            })
+        );
+    }
+
+})
+
+app.use(router);//using the router
+
+crete a folder name utils
+inside utils create sendEmails.js
+
+npm install nodemailer:- to send sendEmails
+
+in sendEmail.js
+import nodeMailer from "nodemailer";
+
+export const sendEmail = async(option)=> {
+    const transporter = nodeMailer.createTransport({
+        host: process.env.SMTP_HOST,
+        port: process.env.SMTP_PORT,
+        service: process.env.SMTP_SERVICE,
+        auth: {
+            user: process.env.SMTP_MAIL,
+            pass: process.env.SMTP_PASSWORD,
+        },
+    });
+
+    const mailOptions = {
+        from: process.env.SMTP_MAIL,
+        to: option.email,
+        subject: option.subject,
+        text: `${options.message} \n\nEmail od User Who Sent The Message: ${options.userEmail}`,
+    };
+await transporter.sendMail(mailOptions);
+}
+
+in config.env
+
+SMTP_HOST=smtp.gmail.com
+
+SMTP_PORT=465
+
+SMTP_SERVICE=gmail
+
+SMTP_MAIL=prakharpatni321@gmail.com
+
+SMTP_PASSWORD=bbgf sxuf ujby aldd
+you get this password from goole manage accounts app passwords
+

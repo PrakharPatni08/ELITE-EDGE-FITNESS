@@ -1,0 +1,4 @@
+ npm create vite@latest ./
+
+ npm i react-spinners react-toastify react-router-dom axios
+ 
