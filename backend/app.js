@@ -1,56 +1,73 @@
-import express from "express";
-import dotenv from "dotenv";
-dotenv.config({ path: "../config.env" });
-import cors from "cors";
-import { sendEmail } from "./utils/sendEmail.js";
+import express from 'express';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import { contactSchema } from './models/contactModel.js';  // Correct relative path
+import { fitnessPackageSchema } from './models/fitnessPackageModel.js';  // Correct import path
+import { sendEmail } from './utils/sendEmail.js'; // Correct import path for sendEmail
+
+// Load environment variables from config.env file
+dotenv.config({ path: './config.env' });
 
 const app = express();
-const router = express.Router();
+app.use(cors());
+app.use(bodyParser.json()); // To parse JSON bodies
+const PORT = process.env.PORT || 4000;
 
-// config({ path: "../config.env" });
-
-app.use(
-  cors({
-    origin: [process.env.FRONTEND_URL],
-    methods: ["POST"],
-    credentials: true,
-  })
-);
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-router.post("/send/mail", async (req, res, next) => {
-  const { name, email, message } = req.body;
-  if (!name || !email || !message) {
-    return next(
-      res.status(400).json({
-        success: false,
-        message: "Please provide all details",
-      })
-    );
-  }
+// MongoDB connection
+const connectToMongoDB = async () => {
   try {
-    await sendEmail({
-      email: "merndeveloper4@gmail.com",
-      subject: "GYM WEBSITE CONTACT",
-      message,
-      userEmail: email,
+    await mongoose.connect(process.env.MONGO_URI, {
+      dbName: 'fitnessApp',
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
-    res.status(200).json({
-      success: true,
-      message: "Message Sent Successfully.",
-    });
+    console.log('Connected to MongoDB successfully');
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: " Internal Server Error",
+    console.error('Error connecting to MongoDB:', error.message);
+    process.exit(1); // Exit on MongoDB connection failure
+  }
+};
+
+connectToMongoDB();
+
+// Routes for handling contact form and sending email
+app.post('/send/mail', async (req, res) => {
+  const { name, email, message } = req.body;
+
+  try {
+    // Save contact message in the database
+    const newMessage = new contactSchema({ name, email, message });
+    await newMessage.save();
+
+    // Send email using the sendEmail function
+    await sendEmail({
+      email: process.env.RECIPIENT_EMAIL,  // Recipient's email (can be passed from frontend or stored in .env)
+      subject: `Message from ${name}`,     // Subject of the email
+      message: message,                    // Message content
+      userEmail: email,                    // Sender's email
     });
+
+    res.status(200).json({ message: 'Message sent successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error sending message', error });
   }
 });
 
-app.use(router);
+// Routes for handling fitness package form
+app.post('/api/fitness-package', async (req, res) => {
+  try {
+    const fitnessPackage = new fitnessPackageSchema(req.body);
+    await fitnessPackage.save();
+    res.status(200).json({ message: 'Form submitted successfully!' });
+  } catch (error) {
+    console.error('Error saving data:', error);
+    res.status(500).json({ message: 'Failed to submit the form.' });
+  }
+});
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server listening at port ${process.env.PORT}`);
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });

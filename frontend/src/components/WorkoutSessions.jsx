@@ -6,20 +6,20 @@ const WorkoutSessions = () => {
     <div className="wrapper">
       <h1>TOP WORKOUT SESSION</h1>
       <p>
-      These workout sessions are structured fitness routines designed to help individuals achieve their health and wellness goals efficiently. These sessions often include a mix of strength training, cardio, flexibility, and functional movements, catering to various fitness levels. Whether its high-intensity interval training (HIIT), yoga, weightlifting, or endurance-focused activities, these workouts aim to improve physical fitness, boost energy, and promote overall well-being. Tailored for beginners and advanced athletes alike, top workout sessions focus on maximizing results in a time-effective manner while keeping the exercises engaging and challenging.
+      Discover the ultimate workout sessions tailored to boost your strength, stamina, and flexibility. From high-intensity interval training to calming yoga flows, we have something for every fitness goal!
       </p>
       <img src="img5.jpg" alt="workout" />
     </div>
 <div className="wrapper">
   <h1>FEATURED BOOTCAMPS</h1>
   <p>
-  Featured bootcamps are intensive training programs designed to push your physical limits and deliver fast, noticeable results. These sessions combine high-energy workouts like strength training, cardio, and agility exercises in a dynamic group environment. Perfect for individuals seeking a motivational and team-focused atmosphere, featured bootcamps are often led by experienced trainers who guide participants through challenging routines. Whether you are aiming to build endurance, lose weight, or enhance overall fitness, these bootcamps offer variety, expert guidance, and a supportive community to help you achieve your goals.
+  Join our featured bootcamps for an intensive, results-driven fitness experience. Transform your body and mind with expert-led sessions designed to challenge and inspire you!
   </p>
   <div className="bootcamps">
     <div>
       <h4>HIIT Bootcamp
       <p>
-      Experience the power of High-Intensity Interval Training (HIIT), a fast-paced workout designed to burn calories and build endurance. Alternate between explosive cardio bursts and short recovery periods for maximum fat-burning results in minimal time.
+      Experience the power of High-Intensity Interval Training (HIIT), a fast-paced workout designed to burn calories and build endurance. 
       </p>
       </h4>
     </div>

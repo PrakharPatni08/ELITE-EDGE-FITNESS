@@ -161,12 +161,12 @@ header p {
 }
 .workout_session .wrapper .bootcamps div {
   border: 2px solid gray;
-  border-radius: 15px;
+  border-radius: 5px;
   padding: 20px 10px;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  box-shadow: 10px 5px 5px gray;
+  /* box-shadow: 10px 5px 5px gray; */
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
   background: white; /* Default background */
   color: black; /* Default text color */
@@ -174,7 +174,7 @@ header p {
   overflow: hidden;
 }
 .workout_session .wrapper .bootcamps div:hover {
-  transform: scale(1.1) rotate(2deg);
+  /* transform: scale(1.1) rotate(2deg); */
   box-shadow: 0px 5px 20px #0095ff;
   background: linear-gradient(135deg, #111, #222);
   color:#0095ff;

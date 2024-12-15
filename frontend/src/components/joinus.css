@@ -1,0 +1,114 @@
+.fitness-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  flex-direction: column;
+  font-family: 'Roboto', sans-serif;
+  background: url("/img1.webp") no-repeat center center fixed;
+  background-size: cover;
+  color: #f4f4f9;
+  
+}
+
+.fitness-form {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 15px 20px;  /* Reduced padding further */
+  border-radius: 8px;  /* Reduced border radius */
+  box-shadow: 0 3px 15px rgb(255, 255, 255);
+  width: 100%;
+  max-width: 600px;  /* Updated width to 600px */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;  /* Reduced gap further */
+}
+
+
+.section-title {
+  font-family: 'Exo 2', sans-serif;
+  color: #0095ff;
+  font-size: 1.5rem;  /* Reduced font size further */
+  text-align: center;
+  margin-bottom: 12px;  /* Reduced margin further */
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.form-label {
+  font-size: 0.9rem;  /* Reduced font size further */
+  color: #ddd;
+  margin-bottom: 8px;  /* Increased spacing between label and input */
+}
+.form-back {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  font-size: 16px;
+}
+
+.form-back:hover {
+  background-color: #0056b3;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;  /* Makes the input boxes span the full width of the form */
+  padding: 8px;  /* Further reduced padding */
+  font-size: 0.9rem;  /* Further reduced font size */
+  margin-top: 5px;  /* Further reduced margin */
+  border: 2px solid #fff;
+  border-radius: 6px;  /* Reduced border radius further */
+  background-color: #444;
+  color: #f4f4f9;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.form-submit {
+  background-color: #0095ff;
+  color: #fff;
+  font-size: 0.9rem;  /* Reduced font size further */
+  padding: 10px;  /* Reduced padding further */
+  border: none;
+  border-radius: 5px;  /* Reduced border radius further */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-top: 12px;  /* Reduced margin further */
+}
+
+.form-submit:hover {
+  background-color: #0267af;
+  transform: translateY(-1px);  /* Reduced translate distance */
+}
+
+.message {
+  text-align: center;
+  color: #ff0000;
+  font-size: 0.9rem;  /* Reduced font size further */
+  margin-bottom: 12px;  /* Reduced margin further */
+}
+
+.home-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 6px 12px;  /* Further reduced padding */
+  text-align: center;
+  border: none;
+  border-radius: 4px;  /* Reduced border radius further */
+  cursor: pointer;
+  margin-bottom: 12px;  /* Reduced margin further */
+}
+
+.home-button:hover {
+  background-color: #45a049;
+}
+.back{
+    color:#0095ff;
+    font-size: 20px;
+}
