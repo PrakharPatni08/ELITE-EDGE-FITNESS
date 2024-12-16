@@ -137,7 +137,6 @@ header p {
   margin: 0 auto;
   padding: 100px 0 50px 0;
   gap: 75px;
-  /* color:#0095ff; */
 }
 .workout_session .wrapper {
   flex: 1;
@@ -160,87 +159,26 @@ header p {
   gap: 30px;
 }
 .workout_session .wrapper .bootcamps div {
-  border: 2px solid gray;
+  border: 1px solid gray;
   border-radius: 5px;
   padding: 20px 10px;
+  transition: 0.3s;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  /* box-shadow: 10px 5px 5px gray; */
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
-  background: white; /* Default background */
-  color: black; /* Default text color */
-  position: relative;
-  overflow: hidden;
+  gap: 12px;
 }
 .workout_session .wrapper .bootcamps div:hover {
-  /* transform: scale(1.1) rotate(2deg); */
-  box-shadow: 0px 5px 20px #0095ff;
-  background: linear-gradient(135deg, #111, #222);
-  color:#0095ff;
+  background: #111;
+  transition: 0.3s;
 }
-
-/* Add a subtle glowing border effect */
-.workout_session .wrapper .bootcamps div::before {
-  content: "";
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: -1;
+.workout_session .wrapper .bootcamps div:hover h4 {
+  color: #0095ff;
+  transition: 0.3s;
 }
-
-.workout_session .wrapper .bootcamps div:hover::before {
-  opacity: 1;
-  animation: glowAnimation 2s infinite;
+.workout_session .wrapper .bootcamps div:hover p {
+  color: whitesmoke;
+  transition: 0.3s;
 }
-
-/* Pulsing background gradient animation */
-@keyframes glowAnimation {
-  0% {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
-  }
-  50% {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
-  }
-  100% {
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent);
-  }
-}
-
-/* Add a "sparkle" effect on hover */
-.workout_session .wrapper .bootcamps div::after {
-  content: "";
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: white;
-  opacity: 0;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  animation: sparkleAnimation 1.5s ease infinite;
-}
-
-@keyframes sparkleAnimation {
-  0% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-  }
-}
-
 @media (max-width: 1520px) {
   .workout_session {
     min-width: 100%;
@@ -430,7 +368,51 @@ header p {
   background: rgba(0, 0, 0, 0.6);
   z-index: 1;
 }
+.pricing .wrapper .card:nth-child(1):before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+.pricing .wrapper .card:nth-child(3):before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
 .pricing .wrapper .card:nth-child(2) .description {
+  background: transparent;
+  position: relative;
+  z-index: 1;
+  flex: 3;
+  height: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 30px;
+  gap: 20px;
+  color: #fff;
+  padding-top: 20px;
+}
+.pricing .wrapper .card:nth-child(1) .description {
+  background: transparent;
+  position: relative;
+  z-index: 1;
+  flex: 3;
+  height: 480px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 30px;
+  gap: 20px;
+  color: #fff;
+  padding-top: 20px;
+}
+.pricing .wrapper .card:nth-child(3) .description {
   background: transparent;
   position: relative;
   z-index: 1;
@@ -451,8 +433,30 @@ header p {
   color: #fff;
   overflow-y: hidden;
 }
+.pricing .wrapper .card:nth-child(1) .title {
+  z-index: 1;
+  position: relative;
+  height: 220px;
+  color: #fff;
+  overflow-y: hidden;
+}
+.pricing .wrapper .card:nth-child(3) .title {
+  z-index: 1;
+  position: relative;
+  height: 220px;
+  color: #fff;
+  overflow-y: hidden;
+}
 .pricing .wrapper .card:nth-child(2) .title::after,
 .pricing .wrapper .card:nth-child(2) .title::before {
+  display: none;
+}
+.pricing .wrapper .card:nth-child(1) .title::after,
+.pricing .wrapper .card:nth-child(1) .title::before {
+  display: none;
+}
+.pricing .wrapper .card:nth-child(3) .title::after,
+.pricing .wrapper .card:nth-child(3) .title::before {
   display: none;
 }
 @media (max-width: 1520px) {

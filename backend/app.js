@@ -1,73 +1,118 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import { contactSchema } from './models/contactModel.js';  // Correct relative path
-import { fitnessPackageSchema } from './models/fitnessPackageModel.js';  // Correct import path
-import { sendEmail } from './utils/sendEmail.js'; // Correct import path for sendEmail
+// app.js
+import express from "express";
+import { config } from "dotenv";
+import cors from "cors"; // Use ES Module import for cors
+import mongoose from "mongoose";
+import { sendEmail } from "./utils/sendEmail.js"; // Import the sendEmail module
 
-// Load environment variables from config.env file
-dotenv.config({ path: './config.env' });
+// Load environment variables
+config({ path: "./config.env" });
+console.log("Environment variables loaded:", process.env.MONGODB_URI);
 
+// Initialize express app
 const app = express();
-app.use(cors());
-app.use(bodyParser.json()); // To parse JSON bodies
-const PORT = process.env.PORT || 4000;
+
+// Middleware setup
+app.use(cors({ origin: 'http://localhost:5173', credentials: true })); // No need to require cors again
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // MongoDB connection
-const connectToMongoDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      dbName: 'fitnessApp',
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('Connected to MongoDB successfully');
-  } catch (error) {
-    console.error('Error connecting to MongoDB:', error.message);
-    process.exit(1); // Exit on MongoDB connection failure
-  }
-};
+mongoose.connect(process.env.MONGODB_URI, {
+})
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => {
+    console.error("MongoDB Connection Error:", err.message);
+    console.error("Full Error:", err);
+  });
 
-connectToMongoDB();
+// Define Mongoose schema for Contact form
+const contactSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  message: { type: String, required: true },
+});
 
-// Routes for handling contact form and sending email
-app.post('/send/mail', async (req, res) => {
+const Contact = mongoose.model("Contact", contactSchema);
+
+// Define Mongoose schema for Fitness Package form
+const fitnessPackageSchema = new mongoose.Schema({
+  fullName: { type: String, required: true },
+  age: { type: Number, required: true },
+  gender: { type: String, required: true },
+  dob: { type: Date, required: true },
+  contactNumber: { type: String, required: true },
+  email: { type: String, required: true },
+  address: { type: String, required: true },
+  trainingPackage: { type: String, required: true },
+  fitnessGoals: { type: String, required: true },
+  trainingMode: { type: String, required: true },
+  timeSlot: { type: String, required: true },
+  fitnessLevel: { type: String, required: true },
+  medicalConditions: { type: String },
+  currentMedications: { type: String },
+  emergencyContact: { type: String, required: true },
+  startDate: { type: Date, required: true },
+  paymentMethod: { type: String, required: true },
+  termsAndConditions: { type: Boolean, required: true },
+  dataConsent: { type: Boolean, required: true },
+});
+
+const FitnessPackage = mongoose.model("FitnessPackage", fitnessPackageSchema);
+
+// API Route for Contact form submission
+app.post("/api/contact", async (req, res) => {
   const { name, email, message } = req.body;
 
+  if (!name || !email || !message) {
+    return res.status(400).json({ success: false, message: "All fields are required." });
+  }
+
   try {
-    // Save contact message in the database
-    const newMessage = new contactSchema({ name, email, message });
-    await newMessage.save();
+    // Save data to MongoDB
+    const newContact = new Contact({ name, email, message });
+    await newContact.save();
 
-    // Send email using the sendEmail function
-    await sendEmail({
-      email: process.env.RECIPIENT_EMAIL,  // Recipient's email (can be passed from frontend or stored in .env)
-      subject: `Message from ${name}`,     // Subject of the email
-      message: message,                    // Message content
-      userEmail: email,                    // Sender's email
-    });
+    // Send email to prakharpatni321@gmail.com
+    try {
+      await sendEmail({
+        email: "prakharpatni321@gmail.com",
+        subject: `New Contact Form Submission from ${name}`,
+        message: `You have received a new message from your contact form.
 
-    res.status(200).json({ message: 'Message sent successfully' });
+Name: ${name}
+Email: ${email}
+Message: ${message}`,
+      });
+      console.log("Email sent successfully.");
+    } catch (emailError) {
+      console.error("Error sending email:", emailError.message);
+    }
+
+    res.status(200).json({ success: true, message: "Message sent successfully." });
   } catch (error) {
-    res.status(500).json({ message: 'Error sending message', error });
+    console.error("Error saving contact form data:", error);
+    res.status(500).json({ success: false, message: "An error occurred. Please try again later." });
   }
 });
 
-// Routes for handling fitness package form
-app.post('/api/fitness-package', async (req, res) => {
+// API Route for Fitness Package form submission
+app.post("/api/fitness-package", async (req, res) => {
+  const formData = req.body;
+
   try {
-    const fitnessPackage = new fitnessPackageSchema(req.body);
-    await fitnessPackage.save();
-    res.status(200).json({ message: 'Form submitted successfully!' });
+    // Save data to MongoDB
+    const newFitnessPackage = new FitnessPackage(formData);
+    await newFitnessPackage.save();
+
+    res.status(200).json({ success: true, message: "Form submitted successfully." });
   } catch (error) {
-    console.error('Error saving data:', error);
-    res.status(500).json({ message: 'Failed to submit the form.' });
+    console.error("Error saving fitness package data:", error);
+    res.status(500).json({ success: false, message: "An error occurred. Please try again later." });
   }
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// Start the server
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+

@@ -1,8 +1,7 @@
+import axios from "axios";
 import { useState } from "react";
 import { ClipLoader } from "react-spinners";
-import axios from "axios";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
 
 const Contact = () => {
   const [name, setName] = useState("");
@@ -14,28 +13,28 @@ const Contact = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      console.log("Sending data:", { name, email, message });
+  
       const { data } = await axios.post(
-        "http://localhost:4000/send/mail",
-        {
-          name,
-          email,
-          message,
-        },
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-        }
+        "http://localhost:4000/api/contact",  // Ensure this matches your backend
+        { name, email, message },
+        { withCredentials: true, headers: { "Content-Type": "application/json" } }
       );
+      
+  
       setName("");
       setEmail("");
       setMessage("");
       toast.success(data.message);
-      setLoading(false);
     } catch (error) {
       setLoading(false);
-      toast.error(error.response.data.message);
+      console.error('Error details:', error.response?.data || error.message || error);
+
+      const errorMessage = error.response?.data?.message || error.message || 'Something went wrong.';
+      toast.error(errorMessage);
     }
   };
+  
 
   return (
     <section className="contact">
@@ -47,6 +46,7 @@ const Contact = () => {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -55,6 +55,7 @@ const Contact = () => {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -63,6 +64,7 @@ const Contact = () => {
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            required
           />
         </div>
         <button

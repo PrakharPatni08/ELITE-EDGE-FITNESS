@@ -3,11 +3,12 @@ import axios from 'axios';
 import './joinus.css';
 import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
 
-
 const FitnessPackageForm = () => {
   const [formData, setFormData] = useState({});
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState(''); // Track message type (success or error)
   const navigate = useNavigate(); // Initialize the navigate function
+
   // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -16,6 +17,7 @@ const FitnessPackageForm = () => {
       [name]: value,
     });
   };
+
   const handleBack = () => {
     navigate('/'); // Navigate to the home page ("/")
   };
@@ -27,20 +29,25 @@ const FitnessPackageForm = () => {
     try {
       const response = await axios.post('http://localhost:4000/api/fitness-package', formData);
       if (response.status === 200) {
-        setMessage('Welcome to our Fitness Elite Family!');
+        setMessage('Welcome to our Fitness Edge Family!');
+        setMessageType('success'); // Set the message type to 'success'
       }
     } catch (error) {
       console.error('Error submitting form:', error);
       setMessage('There was an error submitting the form. Please try again.');
+      setMessageType('error'); // Set the message type to 'error'
     }
   };
-  
-  
 
   return (
     <div className="fitness-form-container">
       {/* Display success or error message */}
-      {message && <div className="message">{message}</div>}
+      {message && (
+        <div className={`message ${messageType === 'success' ? 'success-message' : 'error-message'}`}>
+          {message}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="fitness-form">
         {/* Personal Information Section */}
         <h2 className="section-title">Personal Information</h2>
